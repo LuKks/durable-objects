@@ -1,6 +1,6 @@
 {
   "name": "durable-objects",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Strong-consistent key-value data storage based on Durable Objects",
   "main": "index.js",
   "files": [],
