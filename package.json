@@ -1,0 +1,32 @@
+{
+  "name": "durable-objects",
+  "version": "0.0.1",
+  "description": "Strong-consistent key-value data storage based on Durable Objects",
+  "main": "index.js",
+  "files": [],
+  "scripts": {
+    "test": "standard && brittle test.mjs",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "logs": "wrangler tail"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lukks/durable-objects.git"
+  },
+  "author": "Lucas Barrena (LuKks)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lukks/durable-objects/issues"
+  },
+  "homepage": "https://github.com/lukks/durable-objects#readme",
+  "devDependencies": {
+    "brittle": "^3.3.2",
+    "like-tmp": "^1.0.0",
+    "standard": "^17.1.0",
+    "wrangler": "^3.81.0"
+  },
+  "dependencies": {
+    "like-fetch": "^2.3.0"
+  }
+}

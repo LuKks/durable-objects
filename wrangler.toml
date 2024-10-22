@@ -1,0 +1,18 @@
+name = "durable-objects"
+main = "worker.mjs"
+
+compatibility_date = "2024-09-09"
+compatibility_flags = ["nodejs_compat_v2"]
+
+[observability]
+enabled = true
+
+[durable_objects]
+bindings = [
+  { name = "NAMESPACE", class_name = "Storage" },
+  { name = "STORAGE", class_name = "Storage" }
+]
+
+[[migrations]]
+tag = "v1"
+new_classes = ["Storage"]
