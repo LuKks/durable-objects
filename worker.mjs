@@ -11,18 +11,15 @@ export default {
       return Response.json({ error: 'Invalid request' }, { status: 400 })
     }
 
-    const MAIN_KEY = env.DURABLE_OBJECTS_MAIN_KEY || null
-    const ACCESS_KEY = env.DURABLE_OBJECTS_ACCESS_KEY || null
-
-    const headerMainKey = req.headers.get('x-durable-objects-main-key') || null
-    const headerAccessKey = req.headers.get('x-durable-objects-access-key') || null
-
     const objects = env.NAMESPACE.get(env.NAMESPACE.idFromName('objects'))
     const body = await req.json()
 
     if (body.method === 'create') {
-      if (MAIN_KEY && MAIN_KEY !== headerMainKey) {
-        return Response.json({ error: 'INVALID_MAIN_KEY' }, { status: 401 })
+      const MAIN_TOKEN = env.DURABLE_OBJECTS_TOKEN || null
+      const headerToken = req.headers.get('x-durable-objects-token') || null
+
+      if (MAIN_TOKEN && MAIN_TOKEN !== headerToken) {
+        return Response.json({ error: 'INVALID_TOKEN' }, { status: 401 })
       }
 
       let id = null
@@ -41,10 +38,6 @@ export default {
       })
 
       return Response.json({ id }, { status: 200 })
-    }
-
-    if ((MAIN_KEY && MAIN_KEY !== headerMainKey) && (ACCESS_KEY && ACCESS_KEY !== headerAccessKey)) {
-      return Response.json({ error: 'INVALID_ACCESS_KEY' }, { status: 401 })
     }
 
     if (!body.id) {

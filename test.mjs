@@ -108,22 +108,20 @@ test('purge', async function (t) {
 })
 
 test('main and access tokens', async function (t) {
-  t.plan(5)
+  t.plan(3)
 
-  const DURABLE_OBJECTS_MAIN_KEY = 'abc'
-  const DURABLE_OBJECTS_ACCESS_KEY = 'def'
+  const DURABLE_OBJECTS_TOKEN = 'secret'
 
   const worker = await createWorker(t, {
     vars: {
-      DURABLE_OBJECTS_MAIN_KEY,
-      DURABLE_OBJECTS_ACCESS_KEY
+      DURABLE_OBJECTS_TOKEN
     }
   })
 
   // Can create objects and read/write also
   const objects = new DurableObjects({
     url: worker.$url,
-    mainKey: DURABLE_OBJECTS_MAIN_KEY
+    token: DURABLE_OBJECTS_TOKEN
   })
 
   const id = await objects.create()
@@ -134,16 +132,13 @@ test('main and access tokens', async function (t) {
   t.is(await db.get('/users/1'), 1337)
 
   // Can't create but can write/read
-  const objects2 = new DurableObjects({
-    url: worker.$url,
-    accessKey: DURABLE_OBJECTS_ACCESS_KEY
-  })
+  const objects2 = new DurableObjects({ url: worker.$url })
 
   try {
     await objects2.create()
     t.fail()
   } catch (err) {
-    t.is(err.code, 'INVALID_MAIN_KEY')
+    t.is(err.code, 'INVALID_TOKEN')
   }
 
   const db2 = objects2.from(id)
@@ -151,25 +146,6 @@ test('main and access tokens', async function (t) {
   await db2.put('/users/1', 1337)
 
   t.is(await db2.get('/users/1'), 1337)
-
-  // Can't create nor write/read
-  const objects3 = new DurableObjects({ url: worker.$url })
-
-  try {
-    await objects3.create()
-    t.fail()
-  } catch (err) {
-    t.is(err.code, 'INVALID_MAIN_KEY')
-  }
-
-  const db3 = objects3.from(id)
-
-  try {
-    await db3.get('/users/1')
-    t.fail()
-  } catch (err) {
-    t.is(err.code, 'INVALID_ACCESS_KEY')
-  }
 })
 
 async function createWorker (t, opts = {}) {

@@ -6,16 +6,17 @@ Strong-consistent key-value data storage based on Durable Objects
 npm i durable-objects
 ```
 
-"A globally distributed coordination API with strongly consistent storage, enabling powerful coordination among multiple clients or users with private, transactional, and consistent storage." - https://developers.cloudflare.com/durable-objects/
+"A globally distributed coordination API with strongly consistent storage, enabling powerful coordination among multiple clients or users with private, transactional, and consistent storage."
+
+https://developers.cloudflare.com/durable-objects/
 
 ## Usage
 
-Deploy the `worker.mjs` script with this in the `wrangler.toml` or set them secretly via the Cloudflare Dashboard:
+Deploy the `worker.mjs` script with this in the `wrangler.toml` or set it secretly via the Cloudflare Dashboard:
 
 ```toml
 [vars]
-DURABLE_OBJECTS_MAIN_KEY = "<secret-main-token>"
-DURABLE_OBJECTS_ACCESS_KEY = "<secret-access-token>"
+DURABLE_OBJECTS_TOKEN = "<secret-token>"
 ```
 
 Then you can use it:
@@ -23,7 +24,7 @@ Then you can use it:
 ```js
 const DurableObjects = require('durable-objects')
 
-const objects = new DurableObjects({ mainKey, url: 'https://username.workers.dev' })
+const objects = new DurableObjects({ token, url: 'https://username.workers.dev' })
 
 // Generate a Durable Object ID
 const id = await objects.create()
@@ -67,8 +68,7 @@ Options:
 ```js
 {
   url, // Defaults to env.DURABLE_OBJECTS_URL
-  mainKey, // Defaults to env.DURABLE_OBJECTS_MAIN_KEY
-  accessKey // Defaults to env.DURABLE_OBJECTS_ACCESS_KEY
+  token // Defaults to env.DURABLE_OBJECTS_TOKEN
 }
 ```
 
@@ -78,7 +78,7 @@ Generate a new Durable Object ID.
 
 If you set a name then it always gives the same ID.
 
-If the Worker has not `DURABLE_OBJECTS_ACCESS_KEY` env variable then you can share the ID so others can access it.
+You can share the ID so others can read and write it without the secret token.
 
 #### `db = objects.from(id)`
 

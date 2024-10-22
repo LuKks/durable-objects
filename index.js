@@ -3,8 +3,7 @@ const fetch = require('like-fetch')
 module.exports = class DurableObjects {
   constructor (opts = {}) {
     this.url = opts.url || process.env.DURABLE_OBJECTS_URL
-    this.mainKey = opts.mainKey || process.env.DURABLE_OBJECTS_MAIN_KEY || null
-    this.accessKey = opts.accessKey || process.env.DURABLE_OBJECTS_ACCESS_KEY || null
+    this.token = opts.token || process.env.DURABLE_OBJECTS_TOKEN || null
   }
 
   from (id) {
@@ -21,8 +20,7 @@ module.exports = class DurableObjects {
     const response = await fetch(this.url, {
       method: 'POST',
       headers: {
-        'x-durable-objects-main-key': this.mainKey,
-        'x-durable-objects-access-key': this.accessKey
+        'x-durable-objects-token': this.token
       },
       requestType: 'json',
       body: {
