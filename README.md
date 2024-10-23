@@ -12,11 +12,14 @@ https://developers.cloudflare.com/durable-objects/
 
 ## Usage
 
-Deploy the `worker.mjs` script with this in the `wrangler.toml` or set it secretly via the Cloudflare Dashboard:
+Deploy the `worker.mjs` script by running:
 
-```toml
-[vars]
-DURABLE_OBJECTS_TOKEN = "<secret-token>"
+```sh
+# Configure a secret token
+wrangler secret put DURABLE_OBJECTS_TOKEN
+
+# Deploy the Worker
+wrangler deploy
 ```
 
 Then you can use it:
