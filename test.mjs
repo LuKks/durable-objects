@@ -84,6 +84,10 @@ test('list prefix', async function (t) {
   const out2 = await db.list({ prefix: '/texts/' })
 
   t.is(out2.length, 1)
+
+  const out3 = await db.list({ prefix: null })
+
+  t.is(out3.length, 3)
 })
 
 test('purge', async function (t) {

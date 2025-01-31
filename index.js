@@ -66,7 +66,19 @@ class DurableObject {
   }
 
   async list (options = {}) {
-    const entries = await this.api('list', { options })
+    // TODO: The worker needs improvements to avoid undefineds here
+    // For now, I'm delaying updating the worker and just fixing the lib
+    const entries = await this.api('list', {
+      options: {
+        start: options.start ? options.start : undefined,
+        startAfter: options.startAfter ? options.startAfter : undefined,
+        end: options.end ? options.end : undefined,
+        prefix: options.prefix ? options.prefix : undefined,
+        reverse: options.reverse || false,
+        limit: options.limit || 100
+      }
+    })
+
     const pairs = []
 
     for (const [key, value] of entries) {
